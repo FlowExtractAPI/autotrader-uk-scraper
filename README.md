@@ -42,10 +42,9 @@ Pay only for what you get. Prices per event by Apify plan:
 |---|---|---|---|---|
 | Listing (search-results data) | $0.0005 | $0.00049 | $0.00048 | $0.00047 |
 | Listing details add-on | $0.00025 | $0.00024 | $0.00024 | $0.00023 |
-| Search link (once per link) | $0.001 | $0.0009 | $0.0008 | $0.0007 |
 | Run start (per GB of memory) | $0.003 | $0.0025 | $0.002 | $0.002 |
 
-- **1,000 listings with full details** cost about **$0.75** on the free plan and **$0.70** on GOLD (+ the start and search-link fees).
+- **1,000 listings with full details** cost about **$0.75** on the free plan and **$0.70** on GOLD (+ the run-start fee).
 - **1,000 listings without details** cost about **$0.50** (GOLD: $0.47).
 - The details add-on is never charged when details are turned off, unavailable for that vehicle type, or could not be read.
 
