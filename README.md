@@ -1,4 +1,4 @@
-**[AutoTrader UK Scraper](https://apify.com/dz_omar/autotrader-uk-scraper?fpr=smcx63)** extracts **AutoTrader UK listings** from any search link you copy from autotrader.co.uk: **cars, vans, motorbikes, motorhomes, caravans, trucks, farm machinery, plant and electric bikes**. Paste the link, choose how many listings you want, and get clean data with **price, mileage, specs, registration, seller phone and address, vehicle checks and high-resolution photos**.
+**[AutoTrader UK Scraper](https://apify.com/dz_omar/autotrader-uk-scraper?fpr=smcx63)** extracts **AutoTrader UK listings** from any search link you copy from autotrader.co.uk: **cars, vans, motorbikes, motorhomes, caravans, trucks, farm machinery, plant and electric bikes**. Paste the link, choose how many listings you want, and get **AutoTrader's own listing data, complete and unchanged** — price, mileage, specs, registration, every seller phone number and address, vehicle checks and high-resolution photos.
 
 Perfect for **car dealers**, **vehicle traders and auction buyers**, **market analysts** and **lead-generation teams** who need up-to-date UK vehicle stock without copying listings by hand.
 
@@ -7,20 +7,22 @@ Perfect for **car dealers**, **vehicle traders and auction buyers**, **market an
 - **Any AutoTrader search link** — set your filters on the website (make, model, price, year, mileage, fuel, gearbox, berths, distance…) and paste the address. The same filters apply to the data.
 - **Every vehicle type** — cars, vans, bikes, motorhomes, caravans, trucks, farm, plant and electric-bike searches, plus single listing links.
 - **Large searches collected in full** — when AutoTrader shows thousands of matches, the scraper still reaches them, not just the first pages.
-- **Full listing details** — registration, seller phone and website, description, equipment, history check, price rating against the market, running costs and every photo.
+- **Complete data, as AutoTrader returns it** — every field of the search result and of the full listing, with AutoTrader's own field names and nesting. Nothing dropped, renamed or flattened, so new AutoTrader fields appear in your data automatically.
+- **Full listing details** — registration, every seller phone number and website, description, equipment, history check, price rating against the market, running costs and every photo.
 - **Working high-resolution photos** — 1280×960 image links that open directly.
 - **Duplicates removed** — a listing found by several of your links is delivered and charged once.
 
 ### What data can you extract from AutoTrader UK?
 
-| Category | Fields |
+Each listing has three parts:
+
+| Part | What it holds |
 |---|---|
-| Listing | listing ID, URL, title, headline, description, condition, photos (count, main photo, all photos), seller video, 360° view, home delivery and cost per mile, reserve online, listing flags |
-| Vehicle | make, model, variant, trim, generation, year, first registration, plate, registration number, mileage, body type, fuel, gearbox, engine size and power, drivetrain, doors, seats, colour |
-| Price | price, price as shown, price excluding fees, price on application, price rating, market value, mileage vs average |
-| History & running costs | owners, service history, write-off category, vehicle check (stolen, scrapped, write-off, imported, exported), CO2, fuel economy, road tax, insurance group, expert rating |
-| Type-specific | berths, bed and end layout, dimensions, gross weight, style (e.g. telehandlers, attachments, mountain bikes) |
-| Seller | name, trade or private, dealer ID, rating and review count, phone, website, address, town, county, postcode, region, latitude/longitude, distance, FCA number, logo, dealer page |
+| `search` | The listing exactly as AutoTrader's search results return it: title, price, mileage, year, make, model, specs, seller name and location, photos, badges. |
+| `details` | The full listing exactly as AutoTrader returns it: registration, owners, service history, seller contact (**every phone number**, website), description, equipment, vehicle check, price rating against the market, CO2, tax, insurance group, delivery and reservation options, every photo. |
+| `_meta` | What the scraper adds: listing ID and URL, vehicle type, detail status, **all phone numbers in one list**, working 1280×960 photo links, a short summary (title, price, year, mileage, seller, town) for table views, the source URL and the time. |
+
+Field names inside `search` and `details` are AutoTrader's own, so any field AutoTrader adds or renames shows up as AutoTrader sends it.
 
 ### Why use AutoTrader UK Scraper on Apify?
 
@@ -31,7 +33,7 @@ Running it on Apify gives you **API access**, **scheduling**, **monitoring**, **
 1. Open [AutoTrader UK Scraper](https://apify.com/dz_omar/autotrader-uk-scraper?fpr=smcx63) in Apify Console.
 2. On autotrader.co.uk, run your search with the filters you want and copy the page address.
 3. Paste one or more links into **AutoTrader UK search or listing URLs**.
-4. Set **Maximum listings per URL** (start small: `20`).
+4. Set **Maximum listings per URL** for search links (start small: `20`).
 5. Click **Start**, then download the results as JSON, CSV or Excel, or fetch them over the API.
 
 ## How much does it cost to scrape AutoTrader UK?
@@ -46,7 +48,9 @@ Pay only for what you get. Prices per event by Apify plan:
 
 - **1,000 listings with full details** cost about **$0.75** on the free plan and **$0.70** on GOLD (+ the run-start fee).
 - **1,000 listings without details** cost about **$0.50** (GOLD: $0.47).
-- The details add-on is never charged when details are turned off, unavailable for that vehicle type, or could not be read.
+- **Include full details** applies to **search links**. A **single-listing link always comes with full details** and is charged the listing event plus the details add-on.
+- The details add-on is never charged when details are turned off for a search, not offered for that vehicle type (electric bikes), or could not be read.
+- Example: 2 search links + 4 listing links, Maximum listings per URL = 10, details off → up to 20 listing events for the searches, plus 4 listing events and 4 details add-ons for the listing links.
 
 ## Input and output examples
 
@@ -66,53 +70,87 @@ Pay only for what you get. Prices per event by Apify plan:
 
 | Input value | What it extracts |
 |---|---|
-| Search link (`…/car-search?…`, `…/van-search?…`, `…/motorhome-search?…`, …) | Up to **Maximum listings per URL** listings matching the link's filters |
-| Listing link (`…/car-details/<number>`) | That one listing with full details |
+| Search link (`…/car-search?…`, `…/van-search?…`, `…/electric-bike-search?…`, …) | Up to **Maximum listings per URL** listings matching the link's filters; empty filters such as `make=&model=` mean no filter |
+| Listing link (`…/car-details/<number>`, `…/electric-bike-details/<number>`, …) | That one listing, always with full details (electric bikes: search-result data) |
 | Link without a postcode | A UK-wide search |
 
-The run collects up to **Maximum listings per URL × number of URLs**: 10 links with 100 gives up to 1,000 listings.
+The run collects up to **Maximum listings per URL × number of search links**, plus one listing per listing link: 10 search links with 100 gives up to 1,000 listings.
 
 ### Output
 
 ### Listing record
 
-A real record from a test run (seller phone and registration partly masked here; the dataset has them in full).
+A real record from a test run, shortened (`…`) for the page; phone numbers partly masked here — the dataset has every field in full.
 
 ```json
 [
     {
-        "advert_id": "202610217203885",
-        "url": "https://www.autotrader.co.uk/car-details/202610217203885",
-        "category": "Car",
-        "title": "Ford C-Max 1.6 16v Zetec 5dr",
-        "make": "Ford",
-        "model": "C-Max",
-        "trim": "Zetec",
-        "year": 2010,
-        "registration": "FP10•••",
-        "mileage": 133000,
-        "price": 449,
-        "price_formatted": "£449",
-        "fuel_type": "Petrol",
-        "transmission": "Manual",
-        "engine_size_litres": 1.6,
-        "engine_power_bhp": 99,
-        "co2_g_km": 164,
-        "annual_tax_gbp": 275,
-        "insurance_group": "13E",
-        "price_rating": null,
-        "image_count": 13,
-        "main_image": "https://m.atcdn.co.uk/a/media/w1280h960/c4c977fa2f834eb3b1e080d8698f69f3.jpg",
-        "seller": {
-            "name": "MCV",
-            "type": "Trade",
-            "phone": "(07811) ••••••",
-            "town": "Manchester",
-            "postcode": null,
-            "rating": null,
-            "review_count": null
+        "search": null,
+        "details": {
+            "advertId": "202606283692289",
+            "advertiser": {
+                "sellerName": "Bunty Car Sales",
+                "contact": {
+                    "phoneNumberOne": "(07537) ••••••",
+                    "protectedNumber": false
+                },
+                "location": {
+                    "town": "Oldham",
+                    "postcode": "OL2 6UR",
+                    "latLong": "53.5863337,-2.1290391"
+                },
+                "…": "…"
+            },
+            "vehicle": {
+                "manufacturedYear": 1997,
+                "mileage": {
+                    "mileage": 64000
+                },
+                "colour": "White",
+                "…": "…"
+            },
+            "sale": {
+                "title": "Ford Escort (1997)",
+                "pricing": {
+                    "price": 950
+                },
+                "…": "…"
+            },
+            "specification": {
+                "make": "Ford",
+                "model": "Escort",
+                "bodyType": "Car Derived Van",
+                "fuel": "Diesel",
+                "…": "…"
+            },
+            "…": "every other field AutoTrader returns"
         },
-        "detail_status": "ok"
+        "_meta": {
+            "advert_id": "202606283692289",
+            "url": "https://www.autotrader.co.uk/van-details/202606283692289",
+            "vehicle_type": "van",
+            "detail_status": "ok",
+            "phones": [
+                "(07537) ••••••"
+            ],
+            "image_urls": [
+                "https://m.atcdn.co.uk/a/media/w1280h960/d95638d102cf47df9bd7c95dbc555920.jpg",
+                "https://m.atcdn.co.uk/a/media/w1280h960/69efd93fa41e456ebe06bd491030c193.jpg",
+                "…"
+            ],
+            "title": "Ford Escort (1997)",
+            "make": "Ford",
+            "model": "Escort",
+            "year": 1997,
+            "mileage": 64000,
+            "price": 950,
+            "seller": "Bunty Car Sales",
+            "town": "Oldham",
+            "main_image": "https://m.atcdn.co.uk/a/media/w1280h960/d95638d102cf47df9bd7c95dbc555920.jpg",
+            "source_url": "https://www.autotrader.co.uk/van-details/202606283692289",
+            "scraped_at": "2026-10-27T09:28:01.018Z",
+            "source": "autotrader_uk_scraper"
+        }
     }
 ]
 ```
@@ -135,11 +173,19 @@ No. Paste public search or listing links — no login, cookies or API key.
 
 ### Which AutoTrader links are accepted?
 
-Search links for cars, vans, bikes, motorhomes, caravans, trucks, farm, plant and electric bikes, and single listing links for every type except electric bikes. Links copied without `https://` work too. Other websites and other AutoTrader pages are rejected before the run starts, so nothing is charged.
+Search links and single listing links for cars, vans, bikes, motorhomes, caravans, trucks, farm, plant and electric bikes. Links copied without `https://` work too, and extra website parameters (`searchId`, `page`, `fromsra`…) are ignored. Other websites and other AutoTrader pages are rejected before the run starts, so nothing is charged.
 
 ### Why are some fields empty?
 
-Sellers fill in different details, and some fields only come with full details (registration, phone, description, equipment, vehicle check). Electric-bike results carry search-results data only (`detail_status: "not_available"`).
+The data is AutoTrader's own, so a field is empty when AutoTrader has nothing for it. Sellers fill in different details, and some fields only come with full details (`details`: registration, phone numbers, description, equipment, vehicle check). AutoTrader offers no full details for electric bikes, so their rows carry the search-result data (`_meta.detail_status: "not_available"`) and are never charged the details add-on.
+
+### Where are the seller's phone numbers?
+
+In `details.advertiser.contact` (`phoneNumberOne`, and `phoneNumberTwo` when the seller has a second number), and all of them together in `_meta.phones`.
+
+### What if AutoTrader changes its data?
+
+`search` and `details` are passed through as AutoTrader returns them, so new or renamed fields appear in your data as AutoTrader names them — nothing silently turns empty.
 
 ### Why did my run return fewer listings than I asked for?
 
