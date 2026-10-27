@@ -15,7 +15,7 @@ Perfect for **car dealers**, **vehicle traders and auction buyers**, **market an
 
 | Category | Fields |
 |---|---|
-| Listing | listing ID, URL, title, headline, description, condition, photos (count, main photo, all photos) |
+| Listing | listing ID, URL, title, headline, description, condition, photos (count, main photo, all photos), seller video, 360° view, home delivery and cost per mile, reserve online, listing flags |
 | Vehicle | make, model, variant, trim, generation, year, first registration, plate, registration number, mileage, body type, fuel, gearbox, engine size and power, drivetrain, doors, seats, colour |
 | Price | price, price as shown, price excluding fees, price on application, price rating, market value, mileage vs average |
 | History & running costs | owners, service history, write-off category, vehicle check (stolen, scrapped, write-off, imported, exported), CO2, fuel economy, road tax, insurance group, expert rating |
